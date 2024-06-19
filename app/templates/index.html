@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magisterka</title>
+    <script src="https://unpkg.com/htmx.org@2.0.0" integrity="sha384-wS5l5IKJBvK6sPTKa2WZ1js3d947pvWXbPJ1OmWfEuxLgeHcEbjUUA5i9V5ZkpCw" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{{url_for('static',filename='dist/css/output.css')}}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Manrope', sans-serif;
+        }
+    </style>
+</head>
+<body class="grid h-full grid-cols-8">
+    <div class="flex flex-col items-center justify-center h-full bg-bg-primary col-span-3">
+        <div class="p-10">
+            <div>
+                You will take part in a study on the impact of different pricing strategies used by fast food chains to increase your willingness to pay.
+            </div>
+            <br>
+            <div>
+                The research is conducted for scientific purposes and is anonymous. Your answers will help my masters thesis.
+            </div>
+            <div>
+                The survey should be completed on a computer.
+            </div>
+            <div>
+                The survey should take up to 5 minutes.
+            </div>
+            <br>
+            <div>
+                The survey consists of 2 parts: 
+            </div>
+            <div>
+                1. Questionnaire about your demographics and characteristics,
+            </div>
+            <div>
+                2. Simulation of a restaurant self ordering kiosk experience.
+            </div>
+        </div>
+    </div>
+    <div class="flex flex-col items-center justify-center h-full bg-bg-secondary col-span-5">
+        <div id="form-container" class="flex flex-col items-start justify-center bg-bg-primary rounded w-11/12 h-98 m-auto">
+            <h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white text-center w-full py-10">Part 1.</h1>
+            <form class="max-w-sm mx-auto flex flex-col" action="/submit_person" method="POST">
+                <div class="grid grid-cols-2 gap-y-12 gap-x-4 flex-grow">
+                    <!-- AGE -->
+                    <div>
+                        <label for="age" class="block mb-2 text-sm font-bold text-gray-900 dark:text-white">Age</label>
+                        <input type="number" id="age" name="age" aria-describedby="helper-text-explanation" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="18" required />
+                    </div>
+            
+                    <!-- GENDER -->
+                    <div>
+                        <label for="gender" class="block mb-2 text-sm font-bold text-gray-900 dark:text-white">Gender</label>
+                        <select id="gender" name="gender" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                            <option value="" selected disabled hidden>Select Gender</option>
+                            <option>Male</option>
+                            <option>Female</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+            
+                    <!-- EDUCATION -->
+                    <div>
+                        <label for="education" class="block mb-2 text-sm font-bold text-gray-900 dark:text-white">Education level</label>
+                        <select id="education" name="education" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                            <option value="" selected disabled hidden>Select Education Level</option>
+                            <option>Primary</option>
+                            <option>Secondary [High school]</option>
+                            <option>Higher [BA, MA, PhD]</option>
+                        </select>
+                    </div>
+            
+                    <!-- CITY SIZE -->
+                    <div>
+                        <label for="city" class="block mb-2 text-sm font-bold text-gray-900 dark:text-white">City size</label>
+                        <select id="city" name="city" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                            <option value="" selected disabled hidden>Select City Size</option>
+                            <option>Village</option>
+                            <option>Small city [< 20k people]</option>
+                            <option>Medium city [< 100k people]</option>
+                            <option>Big city [> 100k people]</option>
+                        </select>
+                    </div>
+            
+                    <!-- INCOME -->
+                    <div>
+                        <label for="income" class="block mb-2 text-sm font-bold text-gray-900 dark:text-white">Income level</label>
+                        <select id="income" name="income" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                            <option value="" selected disabled hidden>Select Income Level</option>
+                            <option>< 1000 zł</option>
+                            <option>< 5000 zł</option>
+                            <option>< 10000 zł</option>
+                            <option>> 10000 zł</option>
+                        </select>
+                    </div>
+            
+                    <!-- DINING FREQUENCY -->
+                    <div>
+                        <label for="dining" class="block mb-2 text-sm font-bold text-gray-900 dark:text-white">Frequency of dining</label>
+                        <select id="dining" name="dining" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                            <option value="" selected disabled hidden>Select Dining Frequency</option>
+                            <option>< 2 / month</option>
+                            <option>< 5 / month</option>
+                            <option>< 10 / month</option>
+                            <option>> 10 / month</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="flex justify-end mt-6 py-10">
+                    <button type="submit" class="bg-btn-accept hover:bg-btn-accept-hover text-white font-bold py-2 px-5 rounded">Submit</button>
+                </div>
+            </form>
+        </div>
+</body>
+</html>

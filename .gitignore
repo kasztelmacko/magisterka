@@ -1,0 +1,7 @@
+env/
+chromedriver.exe
+.env
+data/
+package-lock.json
+package.json
+tailwind.config.js
