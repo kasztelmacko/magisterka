@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, session, redirect, url_for
+from flask import Flask, render_template, request, session, redirect, url_for, render_template_string
 from database import insert_person
 import jwt
 import datetime
@@ -48,6 +48,23 @@ def kiosk():
         return render_template('kiosk.html', token=session['token'], user_id=session['user_id'])
     else:
         return redirect(url_for('home'))
+    
+@app.route('/updated_steps')
+def updated_steps():
+    step = int(request.args.get('step', 1))
+    steps = [
+        {'name': 'Information', 'status': 'step-success' if step >= 1 else ''},
+        {'name': 'Demographics', 'status': 'step-success' if step >= 2 else ''},
+        {'name': 'Ordering', 'status': 'step-success' if step >= 3 else ''},
+        {'name': 'End', 'status': 'step-success' if step >= 4 else ''},
+    ]
+    
+    updated_steps_html = '<ul class="steps mt-auto py-10">'
+    for step in steps:
+        updated_steps_html += f'<li class="step {step["status"]}">{step["name"]}</li>'
+    updated_steps_html += '</ul>'
+    
+    return render_template_string(updated_steps_html)
 
 # for testing purposes
 @app.route('/reset', methods=['POST'])
