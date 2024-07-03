@@ -1584,6 +1584,10 @@ html {
   margin-right: auto;
 }
 
+.mb-10 {
+  margin-bottom: 2.5rem;
+}
+
 .mb-2 {
   margin-bottom: 0.5rem;
 }
@@ -1606,14 +1610,6 @@ html {
 
 .mt-auto {
   margin-top: auto;
-}
-
-.mb-10 {
-  margin-bottom: 2.5rem;
-}
-
-.mt-4 {
-  margin-top: 1rem;
 }
 
 .line-clamp-2 {
@@ -1651,6 +1647,10 @@ html {
   height: 20rem;
 }
 
+.h-96 {
+  height: 24rem;
+}
+
 .h-full {
   height: 100%;
 }
@@ -1663,56 +1663,49 @@ html {
   height: auto;
 }
 
-.h-0 {
-  height: 0px;
+.h-5 {
+  height: 1.25rem;
 }
 
-.h-96 {
-  height: 24rem;
+.h-1\/6 {
+  height: 16.666667%;
+}
+
+.h-dvh {
+  height: 100dvh;
+}
+
+.h-5\/6 {
+  height: 83.333333%;
+}
+
+.h-fit {
+  height: -moz-fit-content;
+  height: fit-content;
 }
 
 .max-h-16 {
   max-height: 4rem;
 }
 
-.max-h-full {
-  max-height: 100%;
-}
-
-.w-11\/12 {
-  width: 91.666667%;
+.min-h-96 {
+  min-height: 24rem;
 }
 
 .w-6 {
   width: 1.5rem;
 }
 
-.w-full {
-  width: 100%;
-}
-
 .w-97 {
   width: 97%;
-}
-
-.w-80 {
-  width: 20rem;
-}
-
-.w-60 {
-  width: 15rem;
-}
-
-.w-40 {
-  width: 10rem;
 }
 
 .w-auto {
   width: auto;
 }
 
-.max-w-80 {
-  max-width: 20rem;
+.w-full {
+  width: 100%;
 }
 
 .max-w-sm {
@@ -1743,6 +1736,10 @@ html {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.grid-cols-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 .grid-cols-5 {
   grid-template-columns: repeat(5, minmax(0, 1fr));
 }
@@ -1751,8 +1748,8 @@ html {
   grid-template-columns: repeat(8, minmax(0, 1fr));
 }
 
-.grid-cols-3 {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+.grid-cols-1 {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
 }
 
 .flex-col {
@@ -1855,6 +1852,11 @@ html {
 .bg-white {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+}
+
+.object-cover {
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 
 .p-10 {
@@ -1984,6 +1986,10 @@ html {
 }
 
 @media (min-width: 768px) {
+  .md\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
   .md\:text-5xl {
     font-size: 3rem;
     line-height: 1;

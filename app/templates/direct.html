@@ -33,25 +33,30 @@
         </div>
     </div>
     <div class="flex flex-col items-center justify-center bg-bg-secondary col-span-5 h-1/2">
-        <div id="kiosk-container" class="relative flex flex-col items-start justify-start bg-bg-primary rounded w-97 m-auto kiosk-container-height h-full">
+        <div id="big-container" class="relative flex flex-col items-start justify-center bg-bg-secondary rounded w-97 kiosk-container-height m-auto">
             <div id="overlay" class="absolute inset-0 flex flex-col items-center justify-center bg-bg-primary z-50 rounded">
                 <div class="text-text-primary font-extrabold text-2xl">Tap to start</div>
                 <svg class="animate-bounce w-6 h-6 text-text-primary mt-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
                 </svg>
             </div>
-            <div id="items-container" class="grid grid-cols-3 gap-y-12 gap-x-4 flex-grow overflow-auto h-80 mb-4">
-                {% for item in items %}
-                    <div id="item-{{ item.id }}" class="p-4 h-80 mb-10">
+            <div id="kiosk-container" class="relative flex flex-col items-start justify-start bg-bg-primary rounded m-auto kiosk-container-height w-full h-full">
+                <div id="items-container" class="grid grid-cols-3 gap-y-12 gap-x-4 flex-grow overflow-auto h-80 mb-4">
+                    {% for item in items %}
+                    <div id="item-{{ item.item_id }}" class="p-4 mb-10 draggable-item" draggable="true" ondragstart="onDragStart(event);">
                         {% include 'item_card.html' %}
                     </div>
-                {% endfor %}
-            </div> 
-            
-        </div>
-        <br>
-        <div id="dropzone" class="grid grid-cols-5 items-center justify-center bg-bg-primary w-97 col-span-5 h-1/2" ondragover="onDragOver(event);" ondrop="onDrop(event);">
-            <!-- Dropzone content -->
+                    {% endfor %}                    
+                </div> 
+            </div>
+            <div class="h-5"></div>
+            <div id="dropzone" class="grid grid-cols-5 items-center justify-center bg-bg-primary col-span-5 w-full h-1/2" ondragover="onDragOver(event);" ondrop="onDrop(event);">
+                <div class="rectangle" id="rect1" ondragover="onDragOver(event);" ondrop="onDrop(event);"></div>
+                <div class="rectangle" id="rect2" ondragover="onDragOver(event);" ondrop="onDrop(event);"></div>
+                <div class="rectangle" id="rect3" ondragover="onDragOver(event);" ondrop="onDrop(event);"></div>
+                <div class="rectangle" id="rect4" ondragover="onDragOver(event);" ondrop="onDrop(event);"></div>
+                <div class="rectangle" id="rect5" ondragover="onDragOver(event);" ondrop="onDrop(event);"></div>
+            </div>        
         </div>
     </div>
 </body>

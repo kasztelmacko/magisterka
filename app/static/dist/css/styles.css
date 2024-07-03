@@ -27,3 +27,18 @@ body, html {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+.rectangle {
+    width: auto;
+    height: 70%;
+    border: 1px solid black;
+    margin: 10px;
+}
+
+.draggable-item {
+    cursor: grab;
+}
+
+.draggable-item:active {
+    cursor: grabbing;
+}
