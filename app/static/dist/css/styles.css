@@ -1,0 +1,29 @@
+/* styles.css */
+
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: 'Manrope', sans-serif;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+.col-span-5, .col-span-3 {
+    height: 100%;
+}
+
+.kiosk-container-height {
+    height: calc(100% - 30px)
+}
+
+.draggable-item {
+    cursor: move;
+}
+
+.line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

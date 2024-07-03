@@ -6,23 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Magisterka</title>
     <script src="https://unpkg.com/htmx.org@2.0.0" integrity="sha384-wS5l5IKJBvK6sPTKa2WZ1js3d947pvWXbPJ1OmWfEuxLgeHcEbjUUA5i9V5ZkpCw" crossorigin="anonymous"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const overlay = document.getElementById("overlay");
-            overlay.addEventListener("click", function() {
-                overlay.style.display = "none";
-            });
-        });
-    </script>
+    <script src="{{ url_for('static', filename='js/overlay.js') }}"></script>
     <link rel="stylesheet" href="{{url_for('static',filename='dist/css/output.css')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='dist/css/styles.css')}}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Manrope', sans-serif;
-        }
-    </style>
 </head>
 <body class="grid h-full grid-cols-8">
     <div class="flex flex-col items-center justify-center h-full bg-bg-primary col-span-3">
@@ -37,31 +26,35 @@
             <div>
                 The survey should be completed on a computer.
             </div>
-            <div>
-                The survey should take up to 5 minutes.
+            <div class="text-base">
+                The survey should take up to <span class="font-bold">10 minutes</span>.
             </div>
             <br>
-            <div>
-                The survey consists of 2 parts: 
+            <div class="text-base">
+                The survey consists of <span class="font-bold">3 parts</span>: 
             </div>
             <div>
                 1. Questionnaire about your demographics and characteristics,
             </div>
             <div>
-                2. Simulation of a restaurant self ordering kiosk experience.
+                2. Questionnaire about your willingness to pay (Direct),
+            </div>
+            <div>
+                3. Simulation of a restaurant self ordering kiosk experience (Indirect).
             </div>
         </div>
         <div id="steps-container" class="mt-auto py-10">
             <ul class="steps">
                 <li class="step step-success">Information</li>
                 <li class="step">Demographics</li>
-                <li class="step">Ordering</li>
+                <li class="step">Direct</li>
+                <li class="step">Indirect</li>
                 <li class="step">End</li>
             </ul>
         </div>
     </div>    
     <div class="flex flex-col items-center justify-center h-full bg-bg-secondary col-span-5">
-        <div id="form-container" class="relative flex flex-col items-start justify-center bg-bg-primary rounded w-11/12 h-98 m-auto">
+        <div id="form-container" class="relative flex flex-col items-start justify-center bg-bg-primary rounded w-97 kiosk-container-height m-auto">
             <div id="overlay" class="absolute inset-0 flex flex-col items-center justify-center bg-bg-primary z-50 rounded" hx-get="/updated_steps?step=2" hx-target="#steps-container">
                 <div class="text-text-primary font-extrabold text-2xl">Tap to start</div>
                 <svg class="animate-bounce w-6 h-6 text-text-primary mt-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

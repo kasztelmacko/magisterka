@@ -1,9 +1,9 @@
 from flask import Flask, render_template, request, session, redirect, url_for, render_template_string
-from database import insert_person
-import jwt
+from database import insert_person, select_items
 import datetime
 from dotenv import load_dotenv
 import os
+import jwt
 
 load_dotenv()
 
@@ -15,7 +15,7 @@ SECRET_JWT = os.getenv('SECRET_JWT')
 @app.route('/')
 def home():
     if 'submitted' in session and session['submitted']:
-        return redirect(url_for('kiosk'))
+        return redirect(url_for('direct'))
     else:
         return render_template('index.html', submitted=False)
 
@@ -29,23 +29,24 @@ def submit_characteristic():
         income = request.form['income']
         dining_freq = request.form['dining']
 
-        user_id = insert_person(age, gender, education, city_size, income, dining_freq)
+        person_id = insert_person(age, gender, education, city_size, income, dining_freq)
 
         token = jwt.encode({
-            'user_id': user_id,
+            'person_id': person_id,
             'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=0.5)
         }, SECRET_JWT, algorithm='HS256')
 
         session['submitted'] = True
         session['token'] = token
-        session['user_id'] = user_id
+        session['person_id'] = person_id
 
-        return redirect(url_for('kiosk'))
+        return redirect(url_for('direct'))
     
-@app.route('/kiosk')
-def kiosk():
+@app.route('/direct')
+def direct():
     if 'submitted' in session and session['submitted']:
-        return render_template('kiosk.html', token=session['token'], user_id=session['user_id'])
+        items = select_items([1,2,3,4,5])
+        return render_template('direct.html', token=session.get('token'), person_id=session.get('person_id'), items=items)
     else:
         return redirect(url_for('home'))
     
@@ -55,8 +56,9 @@ def updated_steps():
     steps = [
         {'name': 'Information', 'status': 'step-success' if step >= 1 else ''},
         {'name': 'Demographics', 'status': 'step-success' if step >= 2 else ''},
-        {'name': 'Ordering', 'status': 'step-success' if step >= 3 else ''},
-        {'name': 'End', 'status': 'step-success' if step >= 4 else ''},
+        {'name': 'Direct', 'status': 'step-success' if step >= 3 else ''},
+        {'name': 'Indirect', 'status': 'step-success' if step >= 4 else ''},
+        {'name': 'End', 'status': 'step-success' if step >= 5 else ''},
     ]
     
     updated_steps_html = '<ul class="steps mt-auto py-10">'
@@ -71,7 +73,7 @@ def updated_steps():
 def reset():
     session.pop('submitted', None)
     session.pop('token', None)
-    session.pop('user_id', None)
+    session.pop('person_id', None)
     return redirect(url_for('home'))
 
 if __name__ == '__main__':

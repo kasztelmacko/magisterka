@@ -22,6 +22,18 @@ def insert_person(age, gender, education, city_size, income, dining_freq):
     response = supabase.table("people").insert(new_person).execute()
     
     data = response.data
-    user_id = data[0]['id']
+    user_id = data[0]['person_id']
     return user_id
+
+def select_items(item_id_list=None):
+    query = supabase.table("items").select("*")
+
+    if item_id_list:
+        query = query.in_("item_id", item_id_list)
+    
+    response = query.execute()
+
+    items = response.data
+    return items
+
 
