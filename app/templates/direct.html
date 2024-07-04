@@ -50,13 +50,35 @@
                 </div> 
             </div>
             <div class="h-5"></div>
-            <div id="dropzone" class="grid grid-cols-5 items-center justify-center bg-bg-primary col-span-5 w-full h-1/2" ondragover="onDragOver(event);" ondrop="onDrop(event);">
-                <div class="rectangle" id="rect1" ondragover="onDragOver(event);" ondrop="onDrop(event);"></div>
-                <div class="rectangle" id="rect2" ondragover="onDragOver(event);" ondrop="onDrop(event);"></div>
-                <div class="rectangle" id="rect3" ondragover="onDragOver(event);" ondrop="onDrop(event);"></div>
-                <div class="rectangle" id="rect4" ondragover="onDragOver(event);" ondrop="onDrop(event);"></div>
-                <div class="rectangle" id="rect5" ondragover="onDragOver(event);" ondrop="onDrop(event);"></div>
-            </div>        
+            <form action="/submit_direct_survey" method="POST" id="dropzone-form" class="relative grid grid-cols-5 items-start justify-center bg-bg-primary col-span-5 w-full h-1/2">
+                <div class="rectangle" id="rect1">
+                    <input type="hidden" name="rect1" id="rect1_name" value="">
+                </div>
+                <div class="rectangle" id="rect2">
+                    <input type="hidden" name="rect2" id="rect2_name" value="">
+                </div>
+                <div class="rectangle" id="rect3">
+                    <input type="hidden" name="rect3" id="rect3_name" value="">
+                </div>
+                <div class="rectangle" id="rect4">
+                    <input type="hidden" name="rect4" id="rect4_name" value="">
+                </div>
+                <div class="rectangle" id="rect5">
+                    <input type="hidden" name="rect5" id="rect5_name" value="">
+                </div>
+                <div class="absolute bottom-0 right-0 m-4 flex">
+                    <input
+                        type="text"
+                        class="flex-auto block rounded-l border border-solid border-neutral-200 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary"
+                        placeholder="Max price"
+                        aria-label="Max price"
+                        aria-describedby="button-addon2"
+                        id="wtp"
+                        name="wtp"
+                    />
+                    <button type="submit" class="bg-success hover:bg-btn-accept-hover text-white font-bold py-2 px-5 rounded-l-none rounded-r">Submit</button>
+                </div>                
+            </form>                                                                   
         </div>
     </div>
 </body>

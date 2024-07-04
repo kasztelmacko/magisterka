@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, session, redirect, url_for, render_template_string
-from database import insert_person, select_items
+from database import insert_person, select_items, insert_direct_survey
 import datetime
 from dotenv import load_dotenv
 import os
@@ -49,6 +49,20 @@ def direct():
         return render_template('direct.html', token=session.get('token'), person_id=session.get('person_id'), items=items)
     else:
         return redirect(url_for('home'))
+
+@app.route('/submit_direct_survey', methods=['POST'])
+def submit_direct_survey():
+    if request.method == 'POST':
+        rect1 = request.form.get('rect1', '')
+        rect2 = request.form.get('rect2', '')
+        rect3 = request.form.get('rect3', '')
+        rect4 = request.form.get('rect4', '')
+        rect5 = request.form.get('rect5', '')
+        wtp = request.form.get('wtp', '')
+        person_id = session.get('person_id')
+
+        insert_direct_survey(rect1, rect2, rect3, rect4, rect5, wtp, person_id)
+        return redirect(url_for('indirect'))
     
 @app.route('/updated_steps')
 def updated_steps():

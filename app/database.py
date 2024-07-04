@@ -25,6 +25,19 @@ def insert_person(age, gender, education, city_size, income, dining_freq):
     user_id = data[0]['person_id']
     return user_id
 
+def insert_direct_survey(rect1, rect2, rect3, rect4, rect5, wtp, person_id):
+    new_direct_survey = {
+        "rect1": rect1,
+        "rect2": rect2,
+        "rect3": rect3,
+        "rect4": rect4,
+        "rect5": rect5,
+        "wtp": wtp,
+        "person_id": person_id
+    }
+    response = supabase.table("direct_survey").insert(new_direct_survey).execute()
+    return response
+
 def select_items(item_id_list=None):
     query = supabase.table("items").select("*")
 
