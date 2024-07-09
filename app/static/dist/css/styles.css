@@ -8,6 +8,10 @@ body, html {
     overflow: hidden;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 .col-span-5, .col-span-3 {
     height: 100%;
 }

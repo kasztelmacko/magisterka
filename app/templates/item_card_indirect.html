@@ -1,10 +1,10 @@
-<div id="item-{{ item.item_id }}" class="p-4 mb-10 draggable-item" draggable="true">
-    <div class="w-auto h-fit h-min-96 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-      <a href="#" draggable="false">
+<div id="item-{{ item.item_id }}" class="h-fit w-auto relative group">
+    <div class="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 transition duration-300 ease-in-out transform hover:translate-y-[-4px] hover:shadow-lg" style="height: 450px;">
+      <a class="block" draggable="false">
         <img class="rounded-t-lg" src="{{ item.item_photo }}" alt="" draggable="false" />
       </a>
       <div class="p-5" draggable="false">
-        <a href="#" draggable="false">
+        <a class="block" draggable="false">
           <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ item.item_name }}</h5>
         </a>
         <p class="mb-3 text-xs text-gray-700 dark:text-gray-400 overflow-hidden leading-4 max-h-16 line-clamp-2">
@@ -16,7 +16,5 @@
         </p>
       </div>
     </div>
-</div>
-
-
-
+  </div>
+  

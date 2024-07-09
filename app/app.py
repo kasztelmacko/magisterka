@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, session, redirect, url_for, render_template_string
-from database import insert_person, select_items, insert_direct_survey
+from database import insert_person, select_items, insert_direct_survey, select_types
 import datetime
 from dotenv import load_dotenv
 import os
@@ -18,6 +18,7 @@ def home():
         return redirect(url_for('direct'))
     else:
         return render_template('index.html', submitted=False)
+
 
 @app.route('/submit_person', methods=['POST'])
 def submit_characteristic():
@@ -41,6 +42,7 @@ def submit_characteristic():
         session['person_id'] = person_id
 
         return redirect(url_for('direct'))
+
     
 @app.route('/direct')
 def direct():
@@ -63,6 +65,32 @@ def submit_direct_survey():
 
         insert_direct_survey(rect1, rect2, rect3, rect4, rect5, wtp, person_id)
         return redirect(url_for('indirect'))
+    
+
+@app.route('/indirect')
+def indirect():
+    if 'submitted' in session and session['submitted']:
+        items = select_items()
+        types = select_types()
+
+        custom_order = ['burger', 'wings', 'fries', 'soda']
+        types_sorted = sorted(types, key=lambda x: custom_order.index(x['item_type']))
+
+        grouped_items = {}
+        for item in items:
+            item_type = item['item_type']
+            if item_type not in grouped_items:
+                grouped_items[item_type] = []
+            grouped_items[item_type].append(item)
+
+        grouped_items_sorted = {key: grouped_items[key] for key in custom_order if key in grouped_items}
+
+        return render_template('indirect.html', token=session.get('token'), person_id=session.get('person_id'), grouped_items=grouped_items_sorted, types=types_sorted)
+    else:
+        return redirect(url_for('home'))
+
+
+
     
 @app.route('/updated_steps')
 def updated_steps():

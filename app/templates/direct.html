@@ -41,41 +41,41 @@
                 </svg>
             </div>
             <div id="kiosk-container" class="relative flex flex-col items-start justify-start bg-bg-primary rounded m-auto kiosk-container-height w-full h-full">
-                <div id="items-container" class="grid grid-cols-3 gap-y-12 gap-x-4 flex-grow overflow-auto h-80 mb-4">
+                <div id="items-container" class="grid grid-cols-3 gap-4 flex-grow overflow-auto h-80 mb-4">
                     {% for item in items %}
-                    <div id="item-{{ item.item_id }}" class="p-4 mb-10 draggable-item" draggable="true" ondragstart="onDragStart(event);">
-                        {% include 'item_card.html' %}
+                    <div id="item-{{ item.item_id }}" class="p-4 mb-4 draggable-item flex flex-col justify-between">
+                        {% include 'item_card_direct.html' %}
                     </div>
                     {% endfor %}                    
-                </div> 
+                </div>                
             </div>
             <div class="h-5"></div>
             <form action="/submit_direct_survey" method="POST" id="dropzone-form" class="relative grid grid-cols-5 items-start justify-center bg-bg-primary col-span-5 w-full h-1/2">
                 <div class="rectangle" id="rect1">
-                    <input type="hidden" name="rect1" id="rect1_name" value="">
+                    <input type="hidden" name="rect1" id="rect1_name" value="" required>
                 </div>
                 <div class="rectangle" id="rect2">
-                    <input type="hidden" name="rect2" id="rect2_name" value="">
+                    <input type="hidden" name="rect2" id="rect2_name" value="" required>
                 </div>
                 <div class="rectangle" id="rect3">
-                    <input type="hidden" name="rect3" id="rect3_name" value="">
+                    <input type="hidden" name="rect3" id="rect3_name" value="" required>
                 </div>
                 <div class="rectangle" id="rect4">
-                    <input type="hidden" name="rect4" id="rect4_name" value="">
+                    <input type="hidden" name="rect4" id="rect4_name" value="" required>
                 </div>
                 <div class="rectangle" id="rect5">
-                    <input type="hidden" name="rect5" id="rect5_name" value="">
+                    <input type="hidden" name="rect5" id="rect5_name" value="" required>
                 </div>
                 <div class="absolute bottom-0 right-0 m-4 flex">
                     <input
-                        type="text"
-                        class="flex-auto block rounded-l border border-solid border-neutral-200 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary"
+                        type="number"
+                        class="flex-auto block rounded-l border border-solid border-neutral-200 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-bg-secondary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary"
                         placeholder="Max price"
                         aria-label="Max price"
                         aria-describedby="button-addon2"
                         id="wtp"
                         name="wtp"
-                    />
+                        required />
                     <button type="submit" class="bg-success hover:bg-btn-accept-hover text-white font-bold py-2 px-5 rounded-l-none rounded-r">Submit</button>
                 </div>                
             </form>                                                                   

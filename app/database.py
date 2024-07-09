@@ -49,4 +49,9 @@ def select_items(item_id_list=None):
     items = response.data
     return items
 
+def select_types():
+    response = supabase.table("types").select("*").execute()
+    types = response.data
+    return types
+
 
