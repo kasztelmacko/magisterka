@@ -1,20 +1,23 @@
 <div id="item-{{ item.item_id }}" class="h-fit w-auto relative group">
-    <div class="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 transition duration-300 ease-in-out transform hover:translate-y-[-4px] hover:shadow-lg" style="height: 450px;">
+  <div class="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 transition duration-300 ease-in-out transform hover:translate-y-[-4px] hover:shadow-lg" style="height: 450px;">
       <a class="block" draggable="false">
-        <img class="rounded-t-lg" src="{{ item.item_photo }}" alt="" draggable="false" />
+          <img class="rounded-t-lg" src="{{ item.item_photo }}" alt="" draggable="false" />
       </a>
       <div class="p-5" draggable="false">
-        <a class="block" draggable="false">
-          <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ item.item_name }}</h5>
-        </a>
-        <p class="mb-3 text-xs text-gray-700 dark:text-gray-400 overflow-hidden leading-4 max-h-16 line-clamp-2">
-          {{ item.item_description }}
-        </p>
-        <p class="mt-6 flex items-baseline gap-x-1">
-          <span class="text-5xl font-bold tracking-tight text-gray-900">{{ item.item_base_price }}</span>
-          <span>zł</span>
-        </p>
+          <a class="block" draggable="false">
+              <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ item.item_name }}</h5>
+          </a>
+          <p class="mb-3 text-xs text-gray-700 dark:text-gray-400 overflow-hidden leading-4 max-h-16 line-clamp-2">
+              {{ item.item_description }}
+          </p>
+          <div class="mt-6 flex items-center gap-x-1">
+              <button class="text-5xl font-bold tracking-tight text-gray-900 group-hover:hidden">{{ item.item_base_price }}<span class="text-xl">zł</span></button>
+              <button class="hidden group-hover:flex bg-success hover:bg-btn-accept-hover text-white font-bold py-2 px-4 rounded transition-all duration-300">
+                  Add to Cart
+              </button>
+          </div>
       </div>
-    </div>
   </div>
+</div>
+
   

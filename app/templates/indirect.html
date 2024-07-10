@@ -8,6 +8,7 @@
     <script src="https://unpkg.com/htmx.org@2.0.0" integrity="sha384-wS5l5IKJBvK6sPTKa2WZ1js3d947pvWXbPJ1OmWfEuxLgeHcEbjUUA5i9V5ZkpCw" crossorigin="anonymous"></script>
     <script src="{{ url_for('static', filename='js/overlay.js') }}"></script>
     <script src="{{ url_for('static', filename='js/scroll.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/order_price.js') }}"></script>
     <link rel="stylesheet" href="{{url_for('static',filename='dist/css/output.css')}}">
     <link rel="stylesheet" href="{{url_for('static',filename='dist/css/styles.css')}}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -42,31 +43,68 @@
                 </svg>
             </div>
             <div id="kiosk-container" class="relative flex flex-col items-start justify-start bg-bg-primary rounded m-auto kiosk-container-height w-full h-full">
-                <div id="item-types-container" class="w-full p-4 bg-gray-200 rounded-t flex justify-center">
+                <div id="item-types-container" class="w-full p-4 bg-bg-primary rounded-t flex justify-center">
+                    <!-- For demonstration, assume types and grouped_items are fetched from backend -->
+                    <!-- Replace with actual dynamic content in your environment -->
                     {% for type in types %}
-                        <div class="mr-4 text-center">
+                        <div class="mr-6 text-center px-10 font-extrabold text-text-primary">
                             <a href="#{{ type.item_type|replace(' ', '-') }}">
-                                <img class="mask mask-circle w-12 h-12 m-auto" src="{{ type.type_photo }}" alt="{{ type.item_type }}">
+                                <img class="mask mask-circle w-16 h-16 m-auto" src="{{ type.type_photo }}" alt="{{ type.item_type }}">
                                 {{ type.item_type }}
                             </a>
                         </div>
                     {% endfor %}
                 </div>
                 <div id="items-container" class="flex-grow overflow-auto h-80 mb-4">
+                    <!-- For demonstration, assume grouped_items are fetched from backend -->
+                    <!-- Replace with actual dynamic content in your environment -->
                     {% for item_type, items in grouped_items.items() %}
                         <div id="{{ item_type|replace(' ', '-') }}" class="mb-4">
-                            <h1 class="text-lg font-bold">{{ item_type }}</h1>
+                            <h1 class="text-2xl font-extrabold text-text-primary px-10">{{ item_type }}</h1>
                             <div class="grid grid-cols-3 gap-4">
                                 {% for item in items %}
                                     <div id="item-{{ item.item_id }}" class="p-4 mb-4 flex flex-col justify-between">
-                                        {% include 'item_card_indirect.html' %}
+                                        <div class="h-fit w-auto relative group">
+                                            <div class="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 transition duration-300 ease-in-out transform hover:translate-y-[-4px] hover:shadow-lg" style="height: 450px;">
+                                                <a class="block" draggable="false">
+                                                    <img class="rounded-t-lg" src="{{ item.item_photo }}" alt="" draggable="false" />
+                                                </a>
+                                                <div class="p-5" draggable="false">
+                                                    <a class="block" draggable="false">
+                                                        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ item.item_name }}</h5>
+                                                    </a>
+                                                    <p class="mb-3 text-xs text-gray-700 dark:text-gray-400 overflow-hidden leading-4 max-h-16 line-clamp-2">
+                                                        {{ item.item_description }}
+                                                    </p>
+                                                    <div class="mt-6 flex items-center gap-x-1">
+                                                        <button class="text-5xl font-bold tracking-tight text-gray-900 group-hover:hidden">{{ item.item_base_price }}<span class="text-xl">zł</span></button>
+                                                        <button class="hidden group-hover:flex bg-success hover:bg-btn-accept-hover text-white font-bold py-2 px-4 rounded transition-all duration-300" onclick="addToCart('{{ item.item_name }}', {{ item.item_base_price }})">
+                                                            Add to Cart
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 {% endfor %}
                             </div>
                         </div>
                     {% endfor %}
-                </div>                
-            </div>                                                
+                </div>
+                <div class="w-full h-36 bg-white grid grid-cols-2">
+                    <div id="cart-items" class="flex flex-col items-start p-4">
+                        <!-- List of ordered items will be displayed here -->
+                    </div>
+                    <div class="flex items-center justify-end pr-8 h-full gap-x-4">
+                        <button id="cancel-button" type="button" class="bg-red-500 hover:bg-red-700 text-white font-bold h-3/5 w-1/2 rounded text-2xl">
+                            Cancel
+                        </button>
+                        <button id="order-button" type="submit" class="bg-gray-400 text-white font-bold h-3/5 w-1/2 rounded text-2xl cursor-not-allowed" disabled>
+                            Order
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </body>
