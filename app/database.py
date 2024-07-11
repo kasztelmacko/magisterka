@@ -38,6 +38,18 @@ def insert_direct_survey(rect1, rect2, rect3, rect4, rect5, wtp, person_id):
     response = supabase.table("direct_survey").insert(new_direct_survey).execute()
     return response
 
+def insert_indirect_order(person_id, observation, order_json, order_price, items_json, order_status):
+    new_order = {
+        "person_id": person_id,
+        "observation": observation,
+        "order_json": order_json,
+        "order_price": order_price,
+        "items_json": items_json,
+        "order_status": order_status
+    }
+    response = supabase.table("indirect_orders").insert(new_order).execute()
+    return response
+
 def select_items(item_id_list=None):
     query = supabase.table("items").select("*")
 

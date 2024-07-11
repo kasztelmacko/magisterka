@@ -1,9 +1,10 @@
-from flask import Flask, render_template, request, session, redirect, url_for, render_template_string
-from database import insert_person, select_items, insert_direct_survey, select_types
+from flask import Flask, render_template, request, session, redirect, url_for, render_template_string, jsonify
+from database import insert_person, select_items, insert_direct_survey, select_types, insert_indirect_order
 import datetime
 from dotenv import load_dotenv
 import os
 import jwt
+import json
 
 load_dotenv()
 
@@ -64,11 +65,11 @@ def submit_direct_survey():
         person_id = session.get('person_id')
 
         insert_direct_survey(rect1, rect2, rect3, rect4, rect5, wtp, person_id)
-        return redirect(url_for('indirect'))
+        return redirect(url_for('indirect', observation=1))
     
 
-@app.route('/indirect')
-def indirect():
+@app.route('/indirect/<int:observation>', methods=['GET'])
+def indirect(observation):
     if 'submitted' in session and session['submitted']:
         items = select_items()
         types = select_types()
@@ -85,9 +86,52 @@ def indirect():
 
         grouped_items_sorted = {key: grouped_items[key] for key in custom_order if key in grouped_items}
 
-        return render_template('indirect.html', token=session.get('token'), person_id=session.get('person_id'), grouped_items=grouped_items_sorted, types=types_sorted)
+        simplified_items = []
+        for item in items:
+            simplified_item = {
+                'item_name': item['item_name'],
+                'item_base_price': item['item_base_price'],
+                'item_type': item['item_type'],
+                'price_type': item['price_type']
+            }
+            simplified_items.append(simplified_item)
+
+        items_json = json.dumps(simplified_items)
+        session['items_json'] = items_json
+
+        return render_template('indirect.html', token=session.get('token'), person_id=session.get('person_id'), grouped_items=grouped_items_sorted, types=types_sorted, items_json=items_json, observation=observation)
     else:
         return redirect(url_for('home'))
+
+
+
+    
+@app.route('/submit_indirect_order', methods=['POST'])
+def submit_indirect_order():
+    if request.method == 'POST':
+        items = []
+        for key in request.form:
+            if key.startswith('items'):
+                item = json.loads(request.form[key])
+                items.append(item)
+
+        person_id = session.get('person_id')
+        items_json = session.get('items_json')
+        observation = int(request.form.get('observation', 1))
+        order_status = request.form.get('order_status')
+        order_json = {"items": items}
+        order_price = sum(item['price'] for item in items)
+
+        session.pop('items_json', None)
+
+        insert_indirect_order(person_id, observation, order_json, order_price, items_json, order_status)
+
+        if observation < 6:
+            observation += 1
+            return redirect(url_for('indirect', observation=observation))
+        else:
+            return "END"
+
 
 
 

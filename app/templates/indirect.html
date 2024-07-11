@@ -44,8 +44,6 @@
             </div>
             <div id="kiosk-container" class="relative flex flex-col items-start justify-start bg-bg-primary rounded m-auto kiosk-container-height w-full h-full">
                 <div id="item-types-container" class="w-full p-4 bg-bg-primary rounded-t flex justify-center">
-                    <!-- For demonstration, assume types and grouped_items are fetched from backend -->
-                    <!-- Replace with actual dynamic content in your environment -->
                     {% for type in types %}
                         <div class="mr-6 text-center px-10 font-extrabold text-text-primary">
                             <a href="#{{ type.item_type|replace(' ', '-') }}">
@@ -56,8 +54,6 @@
                     {% endfor %}
                 </div>
                 <div id="items-container" class="flex-grow overflow-auto h-80 mb-4">
-                    <!-- For demonstration, assume grouped_items are fetched from backend -->
-                    <!-- Replace with actual dynamic content in your environment -->
                     {% for item_type, items in grouped_items.items() %}
                         <div id="{{ item_type|replace(' ', '-') }}" class="mb-4">
                             <h1 class="text-2xl font-extrabold text-text-primary px-10">{{ item_type }}</h1>
@@ -91,19 +87,23 @@
                         </div>
                     {% endfor %}
                 </div>
-                <div class="w-full h-36 bg-white grid grid-cols-2">
+                <form action="/submit_indirect_order" method="POST" class="w-full h-36 bg-white grid grid-cols-2">
                     <div id="cart-items" class="flex flex-col items-start p-4">
                         <!-- List of ordered items will be displayed here -->
                     </div>
                     <div class="flex items-center justify-end pr-8 h-full gap-x-4">
-                        <button id="cancel-button" type="button" class="bg-red-500 hover:bg-red-700 text-white font-bold h-3/5 w-1/2 rounded text-2xl">
+                        <input type="hidden" id="order_status" name="order_status" value="">
+                        <input type="hidden" id="observation" name="observation" value="{{ observation }}">
+                        <button id="cancel-button" type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold h-3/5 w-1/2 rounded text-2xl"
+                                onclick="document.getElementById('order_status').value = 'cancel';">
                             Cancel
                         </button>
-                        <button id="order-button" type="submit" class="bg-gray-400 text-white font-bold h-3/5 w-1/2 rounded text-2xl cursor-not-allowed" disabled>
+                        <button id="order-button" type="submit" class="bg-gray-400 text-white font-bold h-3/5 w-1/2 rounded text-2xl cursor-not-allowed"
+                                onclick="document.getElementById('order_status').value = 'ordered';" disabled>
                             Order
                         </button>
                     </div>
-                </div>
+                </form>                               
             </div>
         </div>
     </div>
