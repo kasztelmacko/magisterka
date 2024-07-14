@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, session, redirect, url_for, render_template_string, jsonify
-from database import insert_person, select_items, insert_direct_survey, select_types, insert_indirect_order
+from database import insert_person, select_items, insert_direct_survey, insert_indirect_survey, select_types, insert_discrete_order
 import datetime
 from dotenv import load_dotenv
 import os
@@ -43,18 +43,47 @@ def submit_characteristic():
         session['person_id'] = person_id
 
         return redirect(url_for('direct'))
-
     
 @app.route('/direct')
 def direct():
     if 'submitted' in session and session['submitted']:
-        items = select_items([1,2,3,4,5])
+        items = select_items([1, 2, 7, 12])
         return render_template('direct.html', token=session.get('token'), person_id=session.get('person_id'), items=items)
     else:
         return redirect(url_for('home'))
-
+    
 @app.route('/submit_direct_survey', methods=['POST'])
 def submit_direct_survey():
+    if request.method == 'POST':
+        person_id = session.get('person_id')
+        low_1 = request.form.get('low_1')
+        poor_1 = request.form.get('poor_1')
+        high_1 = request.form.get('high_1')
+        low_2 = request.form.get('low_2')
+        poor_2 = request.form.get('poor_2')
+        high_2 = request.form.get('high_2')
+        low_7 = request.form.get('low_7')
+        poor_7 = request.form.get('poor_7')
+        high_7 = request.form.get('high_7')
+        low_12 = request.form.get('low_12')
+        poor_12 = request.form.get('poor_12')
+        high_12 = request.form.get('high_12')
+
+        insert_direct_survey(person_id, low_1, poor_1, high_1, low_2, poor_2, high_2, low_7, poor_7, high_7, low_12, poor_12, high_12)
+        return redirect(url_for('indirect'))
+
+
+    
+@app.route('/indirect')
+def indirect():
+    if 'submitted' in session and session['submitted']:
+        items = select_items([1,2,3,4,5])
+        return render_template('indirect.html', token=session.get('token'), person_id=session.get('person_id'), items=items)
+    else:
+        return redirect(url_for('home'))
+
+@app.route('/submit_indirect_survey', methods=['POST'])
+def submit_indirect_survey():
     if request.method == 'POST':
         rect1 = request.form.get('rect1', '')
         rect2 = request.form.get('rect2', '')
@@ -64,12 +93,12 @@ def submit_direct_survey():
         wtp = request.form.get('wtp', '')
         person_id = session.get('person_id')
 
-        insert_direct_survey(rect1, rect2, rect3, rect4, rect5, wtp, person_id)
-        return redirect(url_for('indirect', observation=1))
+        insert_indirect_survey(rect1, rect2, rect3, rect4, rect5, wtp, person_id)
+        return redirect(url_for('discrete', observation=1))
     
 
-@app.route('/indirect/<int:observation>', methods=['GET'])
-def indirect(observation):
+@app.route('/discrete/<int:observation>', methods=['GET'])
+def discrete(observation):
     if 'submitted' in session and session['submitted']:
         items = select_items()
         types = select_types()
@@ -99,15 +128,15 @@ def indirect(observation):
         items_json = json.dumps(simplified_items)
         session['items_json'] = items_json
 
-        return render_template('indirect.html', token=session.get('token'), person_id=session.get('person_id'), grouped_items=grouped_items_sorted, types=types_sorted, items_json=items_json, observation=observation)
+        return render_template('discrete.html', token=session.get('token'), person_id=session.get('person_id'), grouped_items=grouped_items_sorted, types=types_sorted, items_json=items_json, observation=observation)
     else:
         return redirect(url_for('home'))
 
 
 
     
-@app.route('/submit_indirect_order', methods=['POST'])
-def submit_indirect_order():
+@app.route('/submit_discrete_order', methods=['POST'])
+def submit_discrete_order():
     if request.method == 'POST':
         items = []
         for key in request.form:
@@ -124,11 +153,11 @@ def submit_indirect_order():
 
         session.pop('items_json', None)
 
-        insert_indirect_order(person_id, observation, order_json, order_price, items_json, order_status)
+        insert_discrete_order(person_id, observation, order_json, order_price, items_json, order_status)
 
         if observation < 6:
             observation += 1
-            return redirect(url_for('indirect', observation=observation))
+            return redirect(url_for('discrete', observation=observation))
         else:
             return "END"
 
@@ -144,7 +173,8 @@ def updated_steps():
         {'name': 'Demographics', 'status': 'step-success' if step >= 2 else ''},
         {'name': 'Direct', 'status': 'step-success' if step >= 3 else ''},
         {'name': 'Indirect', 'status': 'step-success' if step >= 4 else ''},
-        {'name': 'End', 'status': 'step-success' if step >= 5 else ''},
+        {'name': 'Discrete', 'status': 'step-success' if step >= 5 else ''},
+        {'name': 'End', 'status': 'step-success' if step >= 6 else ''},
     ]
     
     updated_steps_html = '<ul class="steps mt-auto py-10">'

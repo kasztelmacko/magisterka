@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magisterka</title>
+    <script src="https://unpkg.com/htmx.org@2.0.0" integrity="sha384-wS5l5IKJBvK6sPTKa2WZ1js3d947pvWXbPJ1OmWfEuxLgeHcEbjUUA5i9V5ZkpCw" crossorigin="anonymous"></script>
+    <script src="{{ url_for('static', filename='js/overlay.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/scroll.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/order_price.js') }}"></script>
+    <link rel="stylesheet" href="{{url_for('static',filename='dist/css/output.css')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='dist/css/styles.css')}}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
+</head>
+<body class="grid h-full grid-cols-8">
+    <div id="description" class="flex flex-col items-center justify-center bg-bg-primary col-span-3 h-1/2">
+        <div class="fixed-reset">
+            <form action="/reset" method="post">
+                <button type="submit" class="btn">Reset</button>
+            </form>
+        </div>
+        <div class="flex flex-col items-center justify-center h-full bg-bg-primary col-span-3">
+            <div id="steps-container" class="mt-auto py-10">
+                <ul class="steps">
+                    <li class="step step-success">Information</li>
+                    <li class="step step-success">Demographics</li>
+                    <li class="step step-success">Direct</li>
+                    <li class="step step-success">Indirect</li>
+                    <li class="step step-success">Discrete</li>
+                    <li class="step">End</li>
+                </ul>
+            </div>
+        </div>
+    </div> 
+    <div class="flex flex-col items-center justify-center h-full bg-bg-secondary col-span-5">
+        <div id="form-container" class="relative flex flex-col items-start justify-center bg-bg-primary rounded w-97 kiosk-container-height m-auto">
+            <div id="overlay" class="absolute inset-0 flex flex-col items-center justify-center bg-bg-primary z-50 rounded">
+                <div class="text-text-primary font-extrabold text-2xl">Tap to start</div>
+                <svg class="animate-bounce w-6 h-6 text-text-primary mt-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                </svg>
+            </div>
+            <div id="kiosk-container" class="relative flex flex-col items-start justify-start bg-bg-primary rounded m-auto kiosk-container-height w-full h-full">
+                <div id="item-types-container" class="w-full p-4 bg-bg-primary rounded-t flex justify-center">
+                    {% for type in types %}
+                        <div class="mr-6 text-center px-10 font-extrabold text-text-primary">
+                            <a href="#{{ type.item_type|replace(' ', '-') }}">
+                                <img class="mask mask-circle w-16 h-16 m-auto" src="{{ type.type_photo }}" alt="{{ type.item_type }}">
+                                {{ type.item_type }}
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div id="items-container" class="flex-grow overflow-auto h-80 mb-4">
+                    {% for item_type, items in grouped_items.items() %}
+                        <div id="{{ item_type|replace(' ', '-') }}" class="mb-4">
+                            <h1 class="text-2xl font-extrabold text-text-primary px-10">{{ item_type }}</h1>
+                            <div class="grid grid-cols-3 gap-4">
+                                {% for item in items %}
+                                    {% include 'item_card_discrete.html' %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <form action="/submit_discrete_order" method="POST" class="w-full h-36 bg-white grid grid-cols-2">
+                    <div id="cart-items" class="flex flex-col items-start p-4">
+                        <!-- List of ordered items will be displayed here -->
+                    </div>
+                    <div class="flex items-center justify-end pr-8 h-full gap-x-4">
+                        <input type="hidden" id="order_status" name="order_status" value="">
+                        <input type="hidden" id="observation" name="observation" value="{{ observation }}">
+                        <button id="cancel-button" type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold h-3/5 w-1/2 rounded text-2xl"
+                                onclick="document.getElementById('order_status').value = 'cancel';">
+                            Cancel
+                        </button>
+                        <button id="order-button" type="submit" class="bg-gray-400 text-white font-bold h-3/5 w-1/2 rounded text-2xl cursor-not-allowed"
+                                onclick="document.getElementById('order_status').value = 'ordered';" disabled>
+                            Order
+                        </button>
+                    </div>
+                </form>                               
+            </div>
+        </div>
+    </div>
+</body>
+</html>

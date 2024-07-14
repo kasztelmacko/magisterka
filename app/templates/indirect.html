@@ -7,35 +7,34 @@
     <title>Magisterka</title>
     <script src="https://unpkg.com/htmx.org@2.0.0" integrity="sha384-wS5l5IKJBvK6sPTKa2WZ1js3d947pvWXbPJ1OmWfEuxLgeHcEbjUUA5i9V5ZkpCw" crossorigin="anonymous"></script>
     <script src="{{ url_for('static', filename='js/overlay.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/scroll.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/order_price.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/drag_drop.js') }}"></script>
     <link rel="stylesheet" href="{{url_for('static',filename='dist/css/output.css')}}">
     <link rel="stylesheet" href="{{url_for('static',filename='dist/css/styles.css')}}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 </head>
-<body class="grid h-full grid-cols-8">
+<body class="grid h-screen grid-cols-8 overflow-hidden">
     <div id="description" class="flex flex-col items-center justify-center bg-bg-primary col-span-3 h-1/2">
         <div class="fixed-reset">
             <form action="/reset" method="post">
                 <button type="submit" class="btn">Reset</button>
             </form>
         </div>
-        <div class="flex flex-col items-center justify-center h-full bg-bg-primary col-span-3">
-            <div id="steps-container" class="mt-auto py-10">
-                <ul class="steps">
-                    <li class="step step-success">Information</li>
-                    <li class="step step-success">Demographics</li>
-                    <li class="step step-success">Direct</li>
-                    <li class="step step-success">Indirect</li>
-                    <li class="step">End</li>
-                </ul>
-            </div>
+        <div id="steps-container" class="mt-auto py-10">
+            <ul class="steps">
+                <li class="step step-success">Information</li>
+                <li class="step step-success">Demographics</li>
+                <li class="step step-success">Direct</li>
+                <li class="step step-success">Indirect</li>
+                <li class="step">Discrete</li>
+                <li class="step">End</li>
+            </ul>
         </div>
-    </div> 
-    <div class="flex flex-col items-center justify-center h-full bg-bg-secondary col-span-5">
-        <div id="form-container" class="relative flex flex-col items-start justify-center bg-bg-primary rounded w-97 kiosk-container-height m-auto">
+    </div>
+    <div class="flex flex-col items-center justify-center bg-bg-secondary col-span-5 h-1/2">
+        <div id="big-container" class="relative flex flex-col items-start justify-center bg-bg-secondary rounded w-97 kiosk-container-height m-auto">
             <div id="overlay" class="absolute inset-0 flex flex-col items-center justify-center bg-bg-primary z-50 rounded">
                 <div class="text-text-primary font-extrabold text-2xl">Tap to start</div>
                 <svg class="animate-bounce w-6 h-6 text-text-primary mt-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -43,68 +42,44 @@
                 </svg>
             </div>
             <div id="kiosk-container" class="relative flex flex-col items-start justify-start bg-bg-primary rounded m-auto kiosk-container-height w-full h-full">
-                <div id="item-types-container" class="w-full p-4 bg-bg-primary rounded-t flex justify-center">
-                    {% for type in types %}
-                        <div class="mr-6 text-center px-10 font-extrabold text-text-primary">
-                            <a href="#{{ type.item_type|replace(' ', '-') }}">
-                                <img class="mask mask-circle w-16 h-16 m-auto" src="{{ type.type_photo }}" alt="{{ type.item_type }}">
-                                {{ type.item_type }}
-                            </a>
-                        </div>
-                    {% endfor %}
-                </div>
-                <div id="items-container" class="flex-grow overflow-auto h-80 mb-4">
-                    {% for item_type, items in grouped_items.items() %}
-                        <div id="{{ item_type|replace(' ', '-') }}" class="mb-4">
-                            <h1 class="text-2xl font-extrabold text-text-primary px-10">{{ item_type }}</h1>
-                            <div class="grid grid-cols-3 gap-4">
-                                {% for item in items %}
-                                    <div id="item-{{ item.item_id }}" class="p-4 mb-4 flex flex-col justify-between">
-                                        <div class="h-fit w-auto relative group">
-                                            <div class="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 transition duration-300 ease-in-out transform hover:translate-y-[-4px] hover:shadow-lg" style="height: 450px;">
-                                                <a class="block" draggable="false">
-                                                    <img class="rounded-t-lg" src="{{ item.item_photo }}" alt="" draggable="false" />
-                                                </a>
-                                                <div class="p-5" draggable="false">
-                                                    <a class="block" draggable="false">
-                                                        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ item.item_name }}</h5>
-                                                    </a>
-                                                    <p class="mb-3 text-xs text-gray-700 dark:text-gray-400 overflow-hidden leading-4 max-h-16 line-clamp-2">
-                                                        {{ item.item_description }}
-                                                    </p>
-                                                    <div class="mt-6 flex items-center gap-x-1">
-                                                        <button class="text-5xl font-bold tracking-tight text-gray-900 group-hover:hidden">{{ item.item_base_price }}<span class="text-xl">zł</span></button>
-                                                        <button class="hidden group-hover:flex bg-success hover:bg-btn-accept-hover text-white font-bold py-2 px-4 rounded transition-all duration-300" onclick="addToCart('{{ item.item_name }}', {{ item.item_base_price }})">
-                                                            Add to Cart
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-                <form action="/submit_indirect_order" method="POST" class="w-full h-36 bg-white grid grid-cols-2">
-                    <div id="cart-items" class="flex flex-col items-start p-4">
-                        <!-- List of ordered items will be displayed here -->
+                <div id="items-container" class="grid grid-cols-3 gap-4 flex-grow overflow-auto h-80 mb-4">
+                    {% for item in items %}
+                    <div id="item-{{ item.item_id }}" class="p-4 mb-4 draggable-item flex flex-col justify-between">
+                        {% include 'item_card_indirect.html' %}
                     </div>
-                    <div class="flex items-center justify-end pr-8 h-full gap-x-4">
-                        <input type="hidden" id="order_status" name="order_status" value="">
-                        <input type="hidden" id="observation" name="observation" value="{{ observation }}">
-                        <button id="cancel-button" type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold h-3/5 w-1/2 rounded text-2xl"
-                                onclick="document.getElementById('order_status').value = 'cancel';">
-                            Cancel
-                        </button>
-                        <button id="order-button" type="submit" class="bg-gray-400 text-white font-bold h-3/5 w-1/2 rounded text-2xl cursor-not-allowed"
-                                onclick="document.getElementById('order_status').value = 'ordered';" disabled>
-                            Order
-                        </button>
-                    </div>
-                </form>                               
+                    {% endfor %}                    
+                </div>                
             </div>
+            <div class="h-5"></div>
+            <form action="/submit_indirect_survey" method="POST" id="dropzone-form" class="relative grid grid-cols-5 items-start justify-center bg-bg-primary col-span-5 w-full h-1/2">
+                <div class="rectangle" id="rect1">
+                    <input type="hidden" name="rect1" id="rect1_name" value="" required>
+                </div>
+                <div class="rectangle" id="rect2">
+                    <input type="hidden" name="rect2" id="rect2_name" value="" required>
+                </div>
+                <div class="rectangle" id="rect3">
+                    <input type="hidden" name="rect3" id="rect3_name" value="" required>
+                </div>
+                <div class="rectangle" id="rect4">
+                    <input type="hidden" name="rect4" id="rect4_name" value="" required>
+                </div>
+                <div class="rectangle" id="rect5">
+                    <input type="hidden" name="rect5" id="rect5_name" value="" required>
+                </div>
+                <div class="absolute bottom-0 right-0 m-4 flex">
+                    <input
+                        type="number"
+                        class="flex-auto block rounded-l border border-solid border-neutral-200 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-bg-secondary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary"
+                        placeholder="Max price"
+                        aria-label="Max price"
+                        aria-describedby="button-addon2"
+                        id="wtp"
+                        name="wtp"
+                        required />
+                    <button type="submit" class="bg-success hover:bg-btn-accept-hover text-white font-bold py-2 px-5 rounded-l-none rounded-r">Submit</button>
+                </div>                
+            </form>                                                                   
         </div>
     </div>
 </body>
