@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 import os
 import jwt
 import json
+from person import Person
 
 load_dotenv()
 
@@ -32,6 +33,7 @@ def submit_characteristic():
         dining_freq = request.form['dining']
 
         person_id = insert_person(age, gender, education, city_size, income, dining_freq)
+        person = Person(person_id, age, gender, education, city_size, income, dining_freq, None, None, None, None)
 
         token = jwt.encode({
             'person_id': person_id,
@@ -41,6 +43,7 @@ def submit_characteristic():
         session['submitted'] = True
         session['token'] = token
         session['person_id'] = person_id
+        session['person'] = person.__dict__
 
         return redirect(url_for('direct'))
     
@@ -70,8 +73,17 @@ def submit_direct_survey():
         high_12 = request.form.get('high_12')
 
         insert_direct_survey(person_id, low_1, poor_1, high_1, low_2, poor_2, high_2, low_7, poor_7, high_7, low_12, poor_12, high_12)
-        return redirect(url_for('indirect'))
 
+        person_dict = session.get('person')
+        if person_dict:
+            person = Person(**person_dict)
+            person.wtp_burger = poor_1
+            person.wtp_double_burger = poor_2
+            person.wtp_special_burger = poor_7
+            person.wtp_fires = poor_12
+            session['person'] = person.__dict__
+
+        return redirect(url_for('indirect'))
 
     
 @app.route('/indirect')
@@ -103,7 +115,7 @@ def discrete(observation):
         items = select_items()
         types = select_types()
 
-        custom_order = ['burger', 'wings', 'fries', 'soda']
+        custom_order = ['burger', 'fries', 'soda']
         types_sorted = sorted(types, key=lambda x: custom_order.index(x['item_type']))
 
         grouped_items = {}
@@ -114,6 +126,25 @@ def discrete(observation):
             grouped_items[item_type].append(item)
 
         grouped_items_sorted = {key: grouped_items[key] for key in custom_order if key in grouped_items}
+
+        person_dict = session.get('person')
+        person = Person(**person_dict) if person_dict else None
+
+        for item in items:
+            if item['price_type'] == 'burger':
+                item['item_base_price'] = int(person.wtp_burger)
+            elif item['price_type'] == 'double_burger':
+                item['item_base_price'] = int(person.wtp_double_burger)
+            elif item['price_type'] == 'special_burger':
+                item['item_base_price'] = int(person.wtp_special_burger)
+            elif item['price_type'] == 'double_special_burger':
+                item['item_base_price'] = int(person.wtp_special_burger) + 5
+            elif item['price_type'] == 'medium_fries':
+                item['item_base_price'] = int(person.wtp_fires)
+            elif item['price_type'] == 'big_fries':
+                item['item_base_price'] = int(person.wtp_fires) + 0.5
+            elif item['price_type'] == 'small_fries':
+                item['item_base_price'] = int(person.wtp_fires) - 5
 
         simplified_items = []
         for item in items:
