@@ -33,12 +33,25 @@ html {
 }
 
 .rectangle {
-    width: auto;
-    height: 70%;
+    position: relative;
+    width: auto; /* Auto width to fit container, consider setting a fixed width if needed */
+    height: 70%; /* Height relative to the container, adjust as needed */
     border: 1px solid #A9A9A9;
     border-radius: 15px;
     margin: 10px;
     background-color: #D3D3D3;
+    overflow: hidden; /* Hide any content that overflows */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box; /* Ensure padding and border are included in the element's total width and height */
+}
+
+/* Optional: Ensure that images fit well within the rectangle */
+.rectangle img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain; /* Adjust this to 'cover' if you prefer images to fill the rectangle */
 }
 
 

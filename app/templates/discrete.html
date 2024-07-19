@@ -60,7 +60,9 @@
                             <h1 class="text-2xl font-extrabold text-text-primary px-10">{{ item_type }}</h1>
                             <div class="grid grid-cols-3 gap-4">
                                 {% for item in items %}
-                                    {% include 'item_card_discrete.html' %}
+                                    <div class="flex">
+                                        {% include 'item_card_discrete.html' %}
+                                    </div>
                                 {% endfor %}
                             </div>
                         </div>

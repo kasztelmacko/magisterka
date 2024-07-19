@@ -1,22 +1,21 @@
-<div id="item-{{ item.item_id }}" class="h-fit w-auto draggable-item relative group" draggable="true">
-  <div class="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 transition duration-300 ease-in-out transform hover:translate-y-[-4px] hover:shadow-lg" style="min-height: 450px;">
-    <a class="block" draggable="false">
-      <img class="rounded-t-lg" src="{{ item.item_photo }}" alt="" draggable="false" />
-    </a>
-    <div class="p-5" draggable="false">
+<div class="relative group flex flex-col h-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 transition duration-300 ease-in-out transform hover:translate-y-[-4px] hover:shadow-lg">
+  <a class="h-72 block overflow-hidden rounded-t-lg flex-shrink-0" draggable="false">
+      <img class="w-full h-full object-cover" src="{{ item.item_photo }}" alt="" draggable="false" />
+  </a>
+  <div class="p-5 flex flex-col justify-between flex-grow" draggable="false">
       <a class="block" draggable="false">
-        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ item.item_name }}</h5>
+          <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ item.item_name }}</h5>
       </a>
       <p class="mb-3 text-xs text-gray-700 dark:text-gray-400 overflow-hidden leading-4 max-h-16 line-clamp-2">
-        {{ item.item_description }}
+          {{ item.item_description }}
       </p>
-      <p class="mt-6 flex items-baseline gap-x-1">
-        <span class="text-5xl font-bold tracking-tight text-gray-900">{{ item.item_base_price }}</span>
-        <span>zł</span>
-      </p>
-    </div>
+      <div class="mt-auto flex items-center gap-x-1">
+          <span class="text-5xl font-bold tracking-tight text-gray-900">{{ item.item_base_price }}<span class="text-xl">zł</span></span>
+      </div>
   </div>
 </div>
+
+
 
 
 
