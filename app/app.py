@@ -135,16 +135,14 @@ def discrete(observation):
                 item['item_base_price'] = int(person.wtp_burger)
             elif item['price_type'] == 'double_burger':
                 item['item_base_price'] = int(person.wtp_double_burger)
-            elif item['price_type'] == 'special_burger':
+            elif item['price_type'] == 'special_burger' or item['price_type'] == 'vege_burger':
                 item['item_base_price'] = int(person.wtp_special_burger)
             elif item['price_type'] == 'double_special_burger':
                 item['item_base_price'] = int(person.wtp_special_burger) + 5
             elif item['price_type'] == 'medium_fries':
                 item['item_base_price'] = int(person.wtp_fires)
             elif item['price_type'] == 'big_fries':
-                item['item_base_price'] = int(person.wtp_fires) + 0.5
-            elif item['price_type'] == 'small_fries':
-                item['item_base_price'] = int(person.wtp_fires) - 5
+                item['item_base_price'] = int(person.wtp_fires) * 1.05
 
         simplified_items = []
         for item in items:
@@ -190,7 +188,7 @@ def submit_discrete_order():
             observation += 1
             return redirect(url_for('discrete', observation=observation))
         else:
-            return "END"
+            return render_template('end.html', token=session.get('token'), person_id=session.get('person_id'))
 
 
 

@@ -1,5 +1,5 @@
 <div class="relative group flex flex-col h-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 transition duration-300 ease-in-out transform hover:translate-y-[-4px] hover:shadow-lg">
-  <a class="h-72 block overflow-hidden rounded-t-lg flex-shrink-0" draggable="false">
+  <a class="block overflow-hidden rounded-t-lg flex-shrink-0" draggable="false">
       <img class="w-full h-full object-cover" src="{{ item.item_photo }}" alt="" draggable="false" />
   </a>
   <div class="p-5 flex flex-col justify-between flex-grow" draggable="false">
@@ -9,6 +9,9 @@
       <p class="mb-3 text-xs text-gray-700 dark:text-gray-400 overflow-hidden leading-4 max-h-16 line-clamp-2">
           {{ item.item_description }}
       </p>
+      <div class="text-xs font-semibold text-gray-700 dark:text-gray-400 mb-3">
+        {{ item.portion_size }} {{ item.portion_size_unit }}, {{ item.calories }} kcal
+      </div>
       <div class="mt-auto flex items-center gap-x-1">
           <span class="text-5xl font-bold tracking-tight text-gray-900">{{ item.item_base_price }}<span class="text-xl">zł</span></span>
       </div>

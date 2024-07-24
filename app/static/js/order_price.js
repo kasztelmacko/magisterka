@@ -57,7 +57,7 @@ function updateCartItems() {
             <div class="flex items-center gap-x-1">
                 <span>${item.name} ${item.price} zł</span>
                 <button class="ml-2 text-red-500 hover:text-red-700" type="button" onclick="removeFromCart('${item.name}', ${item.price})">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="red">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                     <span class="inline-block ml-1 text-xs text-red-500"></span>
@@ -65,6 +65,7 @@ function updateCartItems() {
             </div>
         `;
         cartItemsDiv.appendChild(itemDiv);
+    
     });
 
     // Update the order button state based on the items present
