@@ -1,0 +1,44 @@
+<div id="item-{{ item.item_id }}" class="p-4 mb-4 w-full">
+    <div class="grid grid-cols-4 gap-4 w-full">
+        <!-- Item Card -->
+        <div class="col-span-1 flex flex-col justify-between w-full">
+            <div class="h-fit w-full relative group">
+                <div class="bg-white border border-gray-200 rounded-lg shadow transition duration-300 ease-in-out transform hover:translate-y-[-4px] hover:shadow-lg" style="height: 450px;">
+                    <a class="block w-full" draggable="false">
+                        <img class="rounded-t-lg w-full" src="{{ item.item_photo }}" alt="" draggable="false" />
+                    </a>
+                    <div class="p-5 w-full" draggable="false">
+                        <a class="block w-full" draggable="false">
+                            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">{{ item.item_name }}</h5>
+                        </a>
+                        <p class="mb-3 text-xs text-gray-700 dark:text-gray-400 overflow-hidden leading-4 max-h-16 line-clamp-2">
+                            {{ item.item_description }}
+                        </p>
+                        <div class="text-xs font-semibold text-gray-700 dark:text-gray-400 mb-3">
+                            {{ item.portion_size }} {{ item.portion_size_unit }}, {{ item.calories }} kcal
+                          </div>
+                          <div class="mt-auto flex items-center gap-x-1">
+                            <button class="text-5xl font-bold tracking-tight text-gray-900">?? <span class="text-xl">zł</span></button>
+                          </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Input Fields -->
+        <div class="col-span-3 grid grid-cols-3 gap-4 w-full items-center">
+            <div>
+                <label for="low_{{ item.item_id }}" class="block mb-2 text-sm font-bold text-gray-900">Minimum acceptable price</label>
+                <input type="number" name="low_{{ item.item_id }}" id="low_{{ item.item_id }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3" placeholder="Enter Input 1" required>
+            </div>
+            <div>
+                <label for="poor_{{ item.item_id }}" class="block mb-2 text-sm font-bold text-gray-900">Somewhat poor value</label>
+                <input type="number" name="poor_{{ item.item_id }}" id="poor_{{ item.item_id }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3" placeholder="Enter Input 2" required>
+            </div>
+            <div>
+                <label for="high_{{ item.item_id }}" class="block mb-2 text-sm font-bold text-gray-900">Maximum acceptable price</label>
+                <input type="number" name="high_{{ item.item_id }}" id="high_{{ item.item_id }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3" placeholder="Enter Input 3" required>
+            </div>
+        </div>        
+    </div>
+</div>

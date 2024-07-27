@@ -20,6 +20,17 @@
                 <button type="submit" class="btn">Reset</button>
             </form>
         </div>
+        <div class="p-10">
+            <div>
+                1. Below which price would you say you would not buy the product because you would start to suspect the quality? (Minimum acceptable price)
+            </div>
+            <div>
+                2. At what price would you consider the product to be somewhat expensive, but you might still consider buying it? (Somewhat poor value)
+            </div>
+            <div>
+                3. Above which price would you definitely not buy the product, because you can’t afford it or because you didn’t think it was worth the money? (Maximum acceptable price)
+            </div>
+        </div>
         <div id="steps-container" class="mt-auto py-10">
             <ul class="steps">
                 <li class="step step-success">Information</li>
@@ -43,7 +54,7 @@
                 <form id="direct-survey-form" class="flex flex-col items-start justify-start w-full h-full" action="/submit_direct_survey" method="POST">
                     <div id="items-container" class="flex-grow overflow-auto h-80 mb-4">
                         {% for item in items %}
-                            {% include "item_card_direct.html" %}
+                            {% include "cards/item_card_direct.html" %}
                         {% endfor %}
                         <div class="flex justify-end mt-6 py-10">
                             <button type="submit" class="bg-success hover:bg-btn-accept-hover text-white font-bold py-2 px-5 rounded">Submit</button>

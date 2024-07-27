@@ -45,7 +45,7 @@
                 <div id="items-container" class="grid grid-cols-3 gap-4 flex-grow overflow-auto h-80 mb-4">
                     {% for item in items %}
                     <div id="item-{{ item.item_id }}" class="p-4 mb-4 draggable-item flex flex-col justify-between" draggable="true">
-                        {% include 'item_card_indirect.html' %}
+                        {% include 'cards/item_card_indirect.html' %}
                     </div>
                     {% endfor %}                    
                 </div>                
@@ -70,8 +70,8 @@
                 <div class="absolute bottom-0 right-0 m-4 flex items-center gap-2">
                     <input
                         type="number"
-                        class="block rounded-l border border-solid border-neutral-200 bg-transparent px-3 py-2 text-base font-normal text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-bg-secondary focus:shadow-inset dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:focus:border-primary"
-                        placeholder="Max price"
+                        class="block rounded-l border border-solid border-neutral-200 bg-transparent px-3 py-2 text-base font-normal text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-bg-secondary focus:shadow-inset k:border-white/10"
+                        placeholder="Max price"dar
                         aria-label="Max price"
                         id="wtp"
                         name="wtp"

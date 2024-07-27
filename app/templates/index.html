@@ -40,7 +40,10 @@
                 2. Questionnaire about your willingness to pay (Direct),
             </div>
             <div>
-                3. Simulation of a restaurant self ordering kiosk experience (Indirect).
+                3. Questionnaire about your product attributes perception,
+            </div>
+            <div>
+                4. Simulation of a restaurant self ordering kiosk experience (Indirect).
             </div>
         </div>
         <div id="steps-container" class="mt-auto py-10">
@@ -62,72 +65,26 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
                 </svg>
             </div>
-            <h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white text-center w-full py-10">Part 1.</h1>
+            <h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl text-center w-full py-10">Part 1.</h1>
             <form class="max-w-sm mx-auto flex flex-col" action="/submit_person" method="POST">
                 <div class="grid grid-cols-2 gap-y-12 gap-x-4 flex-grow">
                     <!-- AGE -->
                     <div>
-                        <label for="age" class="block mb-2 text-sm font-bold text-gray-900 dark:text-white">Age</label>
-                        <input type="number" id="age" name="age" aria-describedby="helper-text-explanation" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="18" required />
+                        <label for="age" class="block mb-2 text-sm font-bold text-gray-900">Age</label>
+                        <input type="number" id="age" name="age" aria-describedby="helper-text-explanation" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3" placeholder="18" required />
                     </div>
     
-                    <!-- GENDER -->
+                    {% for question in questions %}
                     <div>
-                        <label for="gender" class="block mb-2 text-sm font-bold text-gray-900 dark:text-white">Gender</label>
-                        <select id="gender" name="gender" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
-                            <option value="" selected disabled hidden>Select Gender</option>
-                            <option>Male</option>
-                            <option>Female</option>
-                            <option>Other</option>
+                        <label for="{{ question.id }}" class="block mb-2 text-sm font-bold text-gray-900">{{ question.label }}</label>
+                        <select id="{{ question.id }}" name="{{ question.id }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3" required>
+                            <option value="" selected disabled hidden>Select {{ question.label }}</option>
+                            {% for option in question.options %}
+                                <option>{{ option }}</option>
+                            {% endfor %}
                         </select>
                     </div>
-    
-                    <!-- EDUCATION -->
-                    <div>
-                        <label for="education" class="block mb-2 text-sm font-bold text-gray-900 dark:text-white">Education level</label>
-                        <select id="education" name="education" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
-                            <option value="" selected disabled hidden>Select Education Level</option>
-                            <option>Primary</option>
-                            <option>Secondary [High school]</option>
-                            <option>Higher [BA, MA, PhD]</option>
-                        </select>
-                    </div>
-    
-                    <!-- CITY SIZE -->
-                    <div>
-                        <label for="city" class="block mb-2 text-sm font-bold text-gray-900 dark:text-white">City size</label>
-                        <select id="city" name="city" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
-                            <option value="" selected disabled hidden>Select City Size</option>
-                            <option>Village</option>
-                            <option>Small city [< 20k people]</option>
-                            <option>Medium city [< 100k people]</option>
-                            <option>Big city [> 100k people]</option>
-                        </select>
-                    </div>
-    
-                    <!-- INCOME -->
-                    <div>
-                        <label for="income" class="block mb-2 text-sm font-bold text-gray-900 dark:text-white">Income level</label>
-                        <select id="income" name="income" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
-                            <option value="" selected disabled hidden>Select Income Level</option>
-                            <option>< 1000 zł</option>
-                            <option>< 5000 zł</option>
-                            <option>< 10000 zł</option>
-                            <option>> 10000 zł</option>
-                        </select>
-                    </div>
-    
-                    <!-- DINING FREQUENCY -->
-                    <div>
-                        <label for="dining" class="block mb-2 text-sm font-bold text-gray-900 dark:text-white">Frequency of dining</label>
-                        <select id="dining" name="dining" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-3 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
-                            <option value="" selected disabled hidden>Select Dining Frequency</option>
-                            <option>< 2 / month</option>
-                            <option>< 5 / month</option>
-                            <option>< 10 / month</option>
-                            <option>> 10 / month</option>
-                        </select>
-                    </div>
+                    {% endfor %}
                 </div>
                 <div class="flex justify-end mt-6 py-10">
                     <button type="submit" class="bg-success hover:bg-btn-accept-hover text-white font-bold py-2 px-5 rounded">Submit</button>
