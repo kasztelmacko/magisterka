@@ -1,0 +1,12 @@
+<div class="absolute top-2 right-2 flex flex-col items-end space-y-1 font-bold text-white">
+    {% if item.price_type == 'special_burger' %}
+      <div class="badge badge-accent font-bold text-white">special</div>
+    {% elif item.price_type == 'double_burger' %}
+      <div class="badge badge-error font-bold text-white">double</div>
+    {% elif item.price_type == 'double_special_burger' %}
+      <div class="badge badge-accent font-bold text-white">special</div>
+      <div class="badge badge-error font-bold text-white">double</div>
+    {% elif item.price_type == 'vege_burger' %}
+      <div class="badge badge-success font-bold text-white">vege</div>
+    {% endif %}
+</div>

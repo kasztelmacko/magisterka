@@ -44,11 +44,9 @@
             <div id="kiosk-container" class="relative flex flex-col items-start justify-start bg-bg-primary rounded m-auto kiosk-container-height w-full h-full">
                 <div id="items-container" class="grid grid-cols-3 gap-4 flex-grow overflow-auto h-80 mb-4">
                     {% for item in items %}
-                    <div id="item-{{ item.item_id }}" class="p-4 mb-4 draggable-item flex flex-col justify-between" draggable="true">
                         {% include 'cards/item_card_indirect.html' %}
-                    </div>
-                    {% endfor %}                    
-                </div>                
+                    {% endfor %}
+                </div>               
             </div>
             <div class="h-5"></div>
             <form action="/submit_indirect_survey" method="POST" id="dropzone-form" class="relative grid grid-cols-5 gap-4 bg-bg-primary col-span-5 w-full h-1/2">

@@ -76,9 +76,14 @@ def select_items(item_id_list=None):
         query = query.in_("item_id", item_id_list)
     
     response = query.execute()
-
     items = response.data
+
+    if item_id_list:
+        order_dict = {item_id: index for index, item_id in enumerate(item_id_list)}
+        items.sort(key=lambda item: order_dict.get(item['item_id'], float('inf')))
+    
     return items
+
 
 def select_types():
     response = supabase.table("types").select("*").execute()

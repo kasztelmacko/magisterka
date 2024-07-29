@@ -1,26 +1,32 @@
-from flask import Flask, render_template, request, session, redirect, url_for, render_template_string, jsonify
-from database import insert_person, select_items, insert_direct_survey, insert_indirect_survey, select_types, insert_discrete_order
 import datetime
-from dotenv import load_dotenv
-import os
-import jwt
 import json
+import os
+
+from dotenv import load_dotenv
+from flask import Flask, render_template, request, session, redirect, url_for, render_template_string, jsonify
+import jwt
+
+from database import insert_person, select_items, insert_direct_survey, insert_indirect_survey, select_types, insert_discrete_order
 from person import Person
+
 
 load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = os.getenv('FLASK_SECRET_KEY')
-
 SECRET_JWT = os.getenv('SECRET_JWT')
+
+with open('static/data/items.json') as f:
+    item_lists = json.load(f)
 
 @app.route('/')
 def home():
+    with open('static/data/fields.json') as f:
+        questions = json.load(f)['questions']
     if 'submitted' in session and session['submitted']:
         return redirect(url_for('direct'))
     else:
-        return render_template('index.html', submitted=False)
-
+        return render_template('index.html', questions=questions, submitted=False)
 
 @app.route('/submit_person', methods=['POST'])
 def submit_characteristic():
@@ -50,8 +56,8 @@ def submit_characteristic():
 @app.route('/direct')
 def direct():
     if 'submitted' in session and session['submitted']:
-        items = select_items([1, 2, 7, 12])
-        return render_template('direct.html', token=session.get('token'), person_id=session.get('person_id'), items=items)
+        items = select_items(item_lists['direct'])
+        return render_template('surveys/direct.html', token=session.get('token'), person_id=session.get('person_id'), items=items)
     else:
         return redirect(url_for('home'))
     
@@ -89,8 +95,8 @@ def submit_direct_survey():
 @app.route('/indirect')
 def indirect():
     if 'submitted' in session and session['submitted']:
-        items = select_items([1,2,3,4,5])
-        return render_template('indirect.html', token=session.get('token'), person_id=session.get('person_id'), items=items)
+        items = select_items(item_lists['indirect'])
+        return render_template('surveys/indirect.html', token=session.get('token'), person_id=session.get('person_id'), items=items)
     else:
         return redirect(url_for('home'))
 
@@ -112,7 +118,13 @@ def submit_indirect_survey():
 @app.route('/discrete/<int:observation>', methods=['GET'])
 def discrete(observation):
     if 'submitted' in session and session['submitted']:
-        items = select_items()
+        discrete_key = f'discrete_{observation}'
+        item_id_list = item_lists['discrete'].get(discrete_key, "*")
+        
+        if item_id_list == "*":
+            items = select_items()
+        else:
+            items = select_items(item_id_list)
         types = select_types()
 
         custom_order = ['burger', 'fries', 'soda']
@@ -142,7 +154,7 @@ def discrete(observation):
             elif item['price_type'] == 'medium_fries':
                 item['item_base_price'] = int(person.wtp_fires)
             elif item['price_type'] == 'big_fries':
-                item['item_base_price'] = int(person.wtp_fires) * 1.05
+                item['item_base_price'] = round(int(person.wtp_fires) * 1.05, 1)
 
         simplified_items = []
         for item in items:
@@ -157,7 +169,7 @@ def discrete(observation):
         items_json = json.dumps(simplified_items)
         session['items_json'] = items_json
 
-        return render_template('discrete.html', token=session.get('token'), person_id=session.get('person_id'), grouped_items=grouped_items_sorted, types=types_sorted, items_json=items_json, observation=observation)
+        return render_template('surveys/discrete.html', token=session.get('token'), person_id=session.get('person_id'), grouped_items=grouped_items_sorted, types=types_sorted, items_json=items_json, observation=observation)
     else:
         return redirect(url_for('home'))
 
@@ -184,13 +196,11 @@ def submit_discrete_order():
 
         insert_discrete_order(person_id, observation, order_json, order_price, items_json, order_status)
 
-        if observation < 6:
+        if observation < item_lists["discrete"]["number_of_discrete_choices"]:
             observation += 1
             return redirect(url_for('discrete', observation=observation))
         else:
             return render_template('end.html', token=session.get('token'), person_id=session.get('person_id'))
-
-
 
 
     
