@@ -127,7 +127,7 @@ def discrete(observation):
             items = select_items(item_id_list)
         types = select_types()
 
-        custom_order = ['burger', 'fries', 'soda']
+        custom_order = ['burger', 'fries', 'soda', 'bundle']
         types_sorted = sorted(types, key=lambda x: custom_order.index(x['item_type']))
 
         grouped_items = {}
